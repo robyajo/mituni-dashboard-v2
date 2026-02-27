@@ -37,7 +37,7 @@ echo "🏗️ Building project..."
 $BUILD_CMD
 
 # 6. Restart Application (PM2)
-APP_NAME="dashboard-mintuni-laundry" 
+APP_NAME="mituni-dashboard-v2" 
 
 if command -v pm2 &> /dev/null; then
     echo "🔄 Restarting PM2 process..."
