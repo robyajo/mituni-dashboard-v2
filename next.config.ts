@@ -8,36 +8,60 @@ const nextConfig: NextConfig = {
 
   // Image optimization
   images: {
+    // unoptimized: true, // Gunakan jika image optimization bermasalah di production
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'ui.shadcn.com',
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000",
+        pathname: "/**",
       },
       {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
+        protocol: "https",
+        hostname: "mituni-api.lapeh.web.id",
+        pathname: "/**",
+      },
+      {
+        protocol: "http",
+        hostname: "service-laundry.mituni.cloud",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "service-laundry.mituni.cloud",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
+      // Tambahkan domain aplikasi itu sendiri untuk mengizinkan relative path di production
+      {
+        protocol: "https",
+        hostname: "dashboard.mituni.id",
+        pathname: "/**",
       },
     ],
-    formats: ['image/webp', 'image/avif'],
   },
 
   // Headers for better security and performance
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: "X-Frame-Options",
+            value: "DENY",
           },
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
           {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
+            key: "Referrer-Policy",
+            value: "origin-when-cross-origin",
           },
         ],
       },
@@ -48,8 +72,8 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: '/home',
-        destination: '/dashboard',
+        source: "/home",
+        destination: "/dashboard",
         permanent: true,
       },
     ];

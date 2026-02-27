@@ -1,32 +1,79 @@
-import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
+import { withAuth, NextRequestWithAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
-// This function can be marked `async` if using `await` inside
-export function proxy(request: NextRequest) {
-  // Add custom middleware logic here
-  // For example: authentication, redirects, etc.
+export default withAuth(
+  async function middleware(request: NextRequestWithAuth) {
+    const token = request.nextauth.token;
+    const path = request.nextUrl.pathname;
 
-  // Example: Redirect /login to /auth/sign-in
-  if (request.nextUrl.pathname === "/login") {
-    return NextResponse.redirect(new URL("/auth/sign-in", request.url))
-  }
+    // 1. Redirect logged-in users away from auth pages
+    // If user is logged in, they shouldn't see sign-in/up pages
+    const authPages = ["/sign-in", "/sign-up", "/forgot-password"];
+    if (
+      token &&
+      authPages.some((p) => path === p || path.startsWith(p + "/"))
+    ) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
 
-  // Example: Redirect /register to /auth/sign-up
-  if (request.nextUrl.pathname === "/register") {
-    return NextResponse.redirect(new URL("/auth/sign-up", request.url))
-  }
+    // 2. RBAC Logic
+    // If needed, we can restrict access based on role here.
+    // Currently, we ensure authenticated users can access the dashboard.
+    if (token) {
+      const rawRole = (token as any).user?.role ?? (token as any).role ?? "";
+      const role = typeof rawRole === "string" ? rawRole.toLowerCase() : "";
 
-  return NextResponse.next()
-}
+      // Example: If we wanted to restrict non-owners
+      // const isOwner = role === "owner";
+      // if (!isOwner && path.startsWith("/admin")) {
+      //   return NextResponse.redirect(new URL("/errors/prohibited", request.url));
+      // }
+    }
 
-// See "Matching Paths" below to learn more
+    return NextResponse.next();
+  },
+  {
+    callbacks: {
+      authorized: ({ token, req }) => {
+        const path = req.nextUrl.pathname;
+
+        // Public paths that do NOT require authentication
+        const publicPaths = [
+          "/sign-in",
+          "/sign-up",
+          "/forgot-password",
+          "/landing",
+        ];
+
+        // Check if path matches any public path (exact or sub-path)
+        const isPublic = publicPaths.some(
+          (p) => path === p || path.startsWith(p + "/"),
+        );
+
+        if (isPublic) {
+          return true;
+        }
+
+        // Allow static assets (though usually handled by matcher)
+        if (
+          path.startsWith("/_next") ||
+          path.startsWith("/static") ||
+          path === "/favicon.ico"
+        ) {
+          return true;
+        }
+
+        // All other paths (/, /dashboard, etc.) require authentication
+        return !!token;
+      },
+    },
+    pages: {
+      signIn: "/sign-in",
+      error: "/errors/unauthorized",
+    },
+  },
+);
+
 export const config = {
-  matcher: [
-    // Match all request paths except for the ones starting with:
-    // - api (API routes)
-    // - _next/static (static files)
-    // - _next/image (image optimization files)
-    // - favicon.ico (favicon file)
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
-  ],
-}
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+};
