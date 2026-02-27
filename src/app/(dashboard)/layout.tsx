@@ -11,9 +11,8 @@ import {
 } from "@/components/theme-customizer";
 import { UpgradeToProButton } from "@/components/upgrade-to-pro-button";
 import { useSidebarConfig } from "@/hooks/use-sidebar-config";
-import NextAuthSessionProvider from "@/provider/SessionProvider";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function DashboardLayout({
   children,
@@ -23,13 +22,16 @@ export default function DashboardLayout({
   const [themeCustomizerOpen, setThemeCustomizerOpen] = React.useState(false);
   const { config } = useSidebarConfig();
   const { data: session, status } = useSession();
+  const router = useRouter();
 
-  if (status === "loading") {
+  React.useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/sign-in");
+    }
+  }, [status, router]);
+
+  if (status === "loading" || status === "unauthenticated") {
     return null;
-  }
-
-  if (status === "unauthenticated") {
-    redirect("/sign-in");
   }
   return (
     <>

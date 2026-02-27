@@ -23,6 +23,7 @@ export default function RootLayout({
       lang="id"
       className={`${inter.variable} antialiased`}
       suppressHydrationWarning={true}
+      data-scroll-behavior="smooth"
     >
       <body className={inter.className}>
         <ThemeProvider defaultTheme="system" storageKey="nextjs-ui-theme">

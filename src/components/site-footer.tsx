@@ -1,5 +1,5 @@
-import { Heart } from "lucide-react"
-import Link from "next/link"
+import { Heart } from "lucide-react";
+import Link from "next/link";
 
 export function SiteFooter() {
   return (
@@ -16,14 +16,14 @@ export function SiteFooter() {
               rel="noopener noreferrer"
               className="font-medium text-foreground hover:text-primary transition-colors"
             >
-              ShadcnStore Team
+              MITUNI
             </Link>
           </div>
           <p className="text-xs text-muted-foreground">
-            Building beautiful, accessible blocks, templates and dashboards for modern web applications.
+            &copy; {new Date().getFullYear()} MITUNI. All rights reserved.
           </p>
         </div>
       </div>
     </footer>
-  )
+  );
 }
