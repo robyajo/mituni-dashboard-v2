@@ -1,9 +1,13 @@
 import {
+  ArrowDown,
+  ArrowRight,
+  ArrowUp,
   CheckCircle2,
   Circle,
   Clock,
   PlayCircle,
-} from "lucide-react"
+  AlertCircle,
+} from "lucide-react";
 
 export const categories = [
   {
@@ -26,7 +30,7 @@ export const categories = [
     value: "refactor",
     label: "Refactor",
   },
-]
+];
 
 export const statuses = [
   {
@@ -49,23 +53,27 @@ export const statuses = [
     label: "Completed",
     icon: CheckCircle2,
   },
-]
+];
 
 export const priorities = [
   {
     label: "Minor",
-    value: "minor"
+    value: "minor",
+    icon: ArrowDown,
   },
   {
     label: "Normal",
-    value: "normal"
+    value: "normal",
+    icon: ArrowRight,
   },
   {
     label: "Important",
-    value: "important"
+    value: "important",
+    icon: ArrowUp,
   },
   {
     label: "Critical",
-    value: "critical"
+    value: "critical",
+    icon: AlertCircle,
   },
-]
+];
