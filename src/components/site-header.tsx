@@ -6,6 +6,9 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { CommandSearch, SearchTrigger } from "@/components/command-search";
 import { ModeToggle } from "@/components/mode-toggle";
+import { NavAvatar } from "./avatar-nav";
+import { BannerAnnouncement } from "./ruixen/banner-announcement";
+import { Zap } from "lucide-react";
 
 export function SiteHeader() {
   const [searchOpen, setSearchOpen] = React.useState(false);
@@ -24,62 +27,28 @@ export function SiteHeader() {
 
   return (
     <>
-      <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
+      <BannerAnnouncement
+        variant="gradient"
+        className="py-2 text-[12px]"
+        icon={<Zap className="size-4" />}
+        actionLabel="Upgrade"
+        actionHref="#"
+      >
+        Your trial ends in 3 days. Upgrade to continue using all features.
+      </BannerAnnouncement>
+      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 flex h-15 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 border-b">
         <div className="flex w-full items-center gap-1 px-4 py-3 lg:gap-2 lg:px-6">
           <SidebarTrigger className="-ml-1" />
           <Separator
             orientation="vertical"
             className="mx-2 data-[orientation=vertical]:h-4"
           />
-          <div className="flex-1 max-w-sm">
+          {/* <div className="flex-1 max-w-sm">
             <SearchTrigger onClick={() => setSearchOpen(true)} />
-          </div>
+          </div> */}
           <div className="ml-auto flex items-center gap-2">
-            <Button
-              variant="ghost"
-              asChild
-              size="sm"
-              className="hidden sm:flex"
-            >
-              <a
-                href="https://shadcnstore.com/blocks"
-                rel="noopener noreferrer"
-                target="_blank"
-                className="dark:text-foreground"
-              >
-                Blocks
-              </a>
-            </Button>
-            <Button
-              variant="ghost"
-              asChild
-              size="sm"
-              className="hidden sm:flex"
-            >
-              <a
-                href="/landing"
-                rel="noopener noreferrer"
-                target="_blank"
-                className="dark:text-foreground"
-              >
-                Landing Page
-              </a>
-            </Button>
-            <Button
-              variant="ghost"
-              asChild
-              size="sm"
-              className="hidden sm:flex"
-            >
-              <a
-                href="https://github.com/silicondeck/shadcn-dashboard-landing-template"
-                rel="noopener noreferrer"
-                target="_blank"
-                className="dark:text-foreground"
-              >
-                GitHub
-              </a>
-            </Button>
+            <SearchTrigger onClick={() => setSearchOpen(true)} />
+            <NavAvatar />
             <ModeToggle />
           </div>
         </div>
