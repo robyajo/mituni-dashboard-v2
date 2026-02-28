@@ -136,7 +136,9 @@ export default function PageConponentsAdmin({
         </div>
       </div>
       {children}
-      <SiteFooter />
+      <div className="pt-6">
+        <SiteFooter />
+      </div>
     </>
   );
 }

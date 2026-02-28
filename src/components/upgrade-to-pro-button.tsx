@@ -19,7 +19,7 @@ export function UpgradeToProButton() {
         <HoverCardTrigger asChild>
           <Button
             size="lg"
-            className="px-6 py-3 bg-gradient-to-br shadow-lg from-slate-900 cursor-pointer to-slate-400 text-white font-bold"
+            className="px-6 py-3 bg-linear-to-br shadow-lg from-slate-900 cursor-pointer to-slate-400 text-white font-bold"
             style={{ minWidth: 180 }}
             onClick={() =>
               typeof window !== "undefined" &&
